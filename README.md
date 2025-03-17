@@ -4,6 +4,7 @@
 ## backend spec
 - express
 - nodemon
+- mongoDB
 
 ## frontend spec
 - react
