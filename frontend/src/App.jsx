@@ -1,4 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react'
+
+function App() {
+  return (
+    <div>App</div>
+  )
+}
+
+export default App
+
+
+
+/* import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Form, Row, Badge, Col } from 'react-bootstrap';
@@ -102,3 +114,4 @@ function App() {
 }
 
 export default App;
+ */
