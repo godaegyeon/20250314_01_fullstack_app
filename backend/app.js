@@ -6,6 +6,8 @@ import { readEmployees } from "./crud-lead.js";
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -22,6 +24,7 @@ app.get("/employees", async (req, res) => {
   }
 });
 app.post("/movie", (req, res) => {
+  console.log(req.body.data);
   res.send("Create movie");
 });
 app.put("/movie/:id", (req, res) => {
