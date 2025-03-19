@@ -1,7 +1,7 @@
 // const express = require('express')
 import express from "express";
 import cors from "cors";
-import { readMovies } from "./crud-lead.js";
+import { readEmployees } from "./crud-lead.js";
 
 const app = express();
 const port = 3000;
@@ -11,11 +11,11 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
-app.get("/movies", async (req, res) => {
+app.get("/employees", async (req, res) => {
   try {
-    const movies = await readMovies();
-    const { name, email } = movies;
-    res.status(200).json(movies);
+    const employees = await readEmployees();
+    const { name, email } = employees;
+    res.status(200).json(employees);
   } catch (e) {
     console.log(e);
     res.status(500).send("DB 연결 오류가 발생했슴니다");
@@ -33,5 +33,5 @@ app.delete("/movie/:id", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
-  readMovies();
+  readEmployees();
 });

@@ -4,11 +4,11 @@ import { MongoClient } from "mongodb";
 const uri = "mongodb+srv://demo_user:1982@cluster0.mfakl.mongodb.net/";
 const client = new MongoClient(uri);
 // const dbName = ''
-export async function readMovies() {
+export async function readEmployees() {
   try {
     await client.connect();
-    const db = client.db("sample_mflix");
-    const coll = db.collection("movies");
+    const db = client.db("hr");
+    const coll = db.collection("employees");
     const cursor = coll.find().limit(10);
     const users = await cursor.toArray()
     return users;
@@ -20,6 +20,6 @@ export async function readMovies() {
     await client.close();
   }
 }
-readMovies().catch(console.dir);
+readEmployees().catch(console.dir);
 
 // export default run
