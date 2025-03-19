@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.fs-25{
+  font-size: .25rem;
+}
+.fs-50{
+  font-size: .50rem;
+}
+.fs-75{
+  font-size: .75rem;
+}
+.fs-125{
+  font-size: 1.25rem;
+}
+.fs-150{
+  font-size: 1.50rem;
+}
+.fs-175{
+  font-size: 1.75rem;
+}
