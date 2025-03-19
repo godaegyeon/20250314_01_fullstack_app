@@ -1,4 +1,5 @@
 // const { MongoClient } = require("mongodb");
+import { request } from "express";
 import { MongoClient } from "mongodb";
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb+srv://demo_user:1982@cluster0.mfakl.mongodb.net/";
@@ -15,9 +16,9 @@ export async function readEmployees() {
 
   } catch (e) {
     console.log(e);
-  } finally {
+/*   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    await client.close(); */
   }
 }
 readEmployees().catch(console.dir);
