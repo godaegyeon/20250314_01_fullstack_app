@@ -2,12 +2,14 @@
 import express from "express";
 import cors from "cors";
 import { readEmployees } from "./crud-lead.js";
+import { createEmployees } from "./crud-create.js";
+import { deleteEmployees } from "./crud-delete.js";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -23,15 +25,41 @@ app.get("/employees", async (req, res) => {
     res.status(500).send("DB 연결 오류가 발생했슴니다");
   }
 });
-app.post("/movie", (req, res) => {
-  console.log(req.body.data);
-  res.send("Create movie");
+app.post("/employees", async (req, res) => {
+  // console.log(req.body);
+  // res.send("Create movie");
+  try {
+    const result = await createEmployees(req.body);
+    res.status(201).json({
+      status: "success",
+      data: result,
+    });
+  } catch (e) {
+    console.log("데이터 등록중 애러 : ", e);
+    res.status(500).json({
+      status: "fail",
+      message: "데이터 등록 실패",
+    });
+  }
 });
-app.put("/movie/:id", (req, res) => {
+app.put("/employees/:id", (req, res) => {
   res.send("Update movie");
 });
-app.delete("/movie/:id", (req, res) => {
-  res.send("Delete movie");
+app.delete("/employees/:id", async (req, res) => {
+  try {
+    const result = await deleteEmployees({ _id: req.params.id });
+    res.status(201).json({
+      status: "success",
+      data: result,
+      message: "사원정보가 삭제되었습니다",
+    });
+  } catch (e) {
+    console.log("데이터 등록중 애러 : ", e);
+    res.status(500).json({
+      status: "fail",
+      message: "삭제요청실패",
+    });
+  }
 });
 
 app.listen(port, () => {

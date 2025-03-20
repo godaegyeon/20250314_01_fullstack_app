@@ -5,14 +5,13 @@ import { MongoClient } from "mongodb";
 const uri = "mongodb+srv://demo_user:1982@cluster0.mfakl.mongodb.net/";
 const client = new MongoClient(uri);
 // const dbName = ''
-export async function readEmployees() {
+export async function createEmployees(employee) {
   try {
     await client.connect();
     const db = client.db("hr");
     const coll = db.collection("employees");
-    const cursor = coll.find();
-    const users = await cursor.toArray()
-    return users;
+    const result = await coll.insertOne(employee);
+    return result;
 
   } catch (e) {
     console.log(e);
@@ -21,6 +20,6 @@ export async function readEmployees() {
     await client.close(); */
   }
 }
-readEmployees().catch(console.dir);
+// createEmployees().catch(console.dir);
 
 // export default run

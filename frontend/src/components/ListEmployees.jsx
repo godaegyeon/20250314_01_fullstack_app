@@ -3,9 +3,13 @@ import axios from 'axios';
 import { Table, Container, Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import ModifyEmployee from '../components/ModifyEmployee';
 
 function ListEmployees() {
   const [employees, setEmployees] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [fullscreen, setFullscreen] = useState(true);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const getEmployees = async () => {
       const data = await axios.get('http://localhost:3000/employees');
@@ -15,13 +19,35 @@ function ListEmployees() {
     };
     getEmployees();
   }, []);
+
+  const handleEdit = () => {
+    setIsVisible((prevState) => !prevState);
+    setFullscreen('breakpoint');
+    setShow(true);
+  };
+
+  const handleDelete = async (e) => {
+    console.log(e.currentTarget.dataset.empId);
+    if (confirm('정말로 삭제하시겠슴니까?')) {
+      console.log('삭제요청을 진행합니다');
+      await axios
+        .delete(
+          `http://localhost:3000/employees/${e.currentTarget.dataset.empId}`
+        )
+        .then((Response) => console.log(Response))
+        .catch((e) => console.log(e));
+    }
+  };
   return (
     <>
+      {isVisible && (
+        <ModifyEmployee fullscreen={fullscreen} show={show} setShow={setShow} />
+      )}
       <Container>
         <Row>
           <Col>
             <h1 className="text-center my-3">사원 목록</h1>
-            <Table striped bordered hover>
+            <Table striped bordered hover className="text-center">
               <thead>
                 <tr>
                   <th>사번</th>
@@ -33,17 +59,16 @@ function ListEmployees() {
                   <th>급여</th>
                   <th>부서</th>
                   <th>커미션</th>
-                  <th>관리자</th>
-                  <th></th>
-                  <th></th>
+                  <th>매니져</th>
+                  <th>관리</th>
                 </tr>
               </thead>
-              <tbody className='fs-75'>
+              <tbody className="fs-75">
                 {employees.map((emp, i) => (
                   <tr key={i}>
                     <td>{emp.employee_id}</td>
                     <td>
-                      {emp.first_name} {emp.last_name}
+                    {emp.lsat_name} {emp.first_name}
                     </td>
                     <td>{emp.email}</td>
                     <td>{emp.phone_number}</td>
@@ -65,11 +90,24 @@ function ListEmployees() {
                     </td>
                     <td>{emp.commission_pct ? emp.commission_pct : '-'}</td>
                     <td>{emp.manager_id ? emp.manager_id : '-'}</td>
-                    <td>
-                      <Button variant="primary" size='sm'>수정</Button>
-                    </td>
-                    <td>
-                      <Button variant="danger" size='sm'>삭제</Button>
+                    <td className="d-flex justify-content-center gap-2">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={
+                          handleEdit
+                        } /*employees={(emp.id)=>{employees.find()} targetEmp}*/
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={handleDelete}
+                        data-emp-id={emp._id}
+                      >
+                        삭제
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -79,7 +117,7 @@ function ListEmployees() {
         </Row>
       </Container>
     </>
-  )
+  );
 }
 
-export default ListEmployees
+export default ListEmployees;
