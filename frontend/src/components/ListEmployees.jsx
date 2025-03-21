@@ -8,8 +8,7 @@ import ModifyEmployee from '../components/ModifyEmployee';
 function ListEmployees() {
   const [employees, setEmployees] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [fullscreen, setFullscreen] = useState(true);
-  const [show, setShow] = useState(false);
+  const [editEmployee, setEditEmployee] =useState(null)
   useEffect(() => {
     const getEmployees = async () => {
       const data = await axios.get('http://localhost:3000/employees');
@@ -20,16 +19,15 @@ function ListEmployees() {
     getEmployees();
   }, []);
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    setEditEmployee(employees[e.target.dataset.id])
     setIsVisible((prevState) => !prevState);
-    setFullscreen('breakpoint');
-    setShow(true);
   };
 
   const handleDelete = async (e) => {
-    console.log(e.currentTarget.dataset.empId);
+    // console.log(e.currentTarget.dataset.empId);
     if (confirm('정말로 삭제하시겠슴니까?')) {
-      console.log('삭제요청을 진행합니다');
+      // console.log('삭제요청을 진행합니다');
       await axios
         .delete(
           `http://localhost:3000/employees/${e.currentTarget.dataset.empId}`
@@ -37,11 +35,12 @@ function ListEmployees() {
         .then((Response) => console.log(Response))
         .catch((e) => console.log(e));
     }
+
   };
   return (
     <>
       {isVisible && (
-        <ModifyEmployee fullscreen={fullscreen} show={show} setShow={setShow} />
+        <ModifyEmployee editEmployee={editEmployee} />
       )}
       <Container>
         <Row>
@@ -96,7 +95,8 @@ function ListEmployees() {
                         size="sm"
                         onClick={
                           handleEdit
-                        } /*employees={(emp.id)=>{employees.find()} targetEmp}*/
+                        }
+                        data-id={i}
                       >
                         수정
                       </Button>

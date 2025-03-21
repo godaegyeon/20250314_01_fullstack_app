@@ -2,7 +2,7 @@
 import { request } from "express";
 import { MongoClient } from "mongodb";
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb+srv://demo_user:1982@cluster0.mfakl.mongodb.net/";
+const uri = "mongodb+srv://demo_user:0717@cluster0.mfakl.mongodb.net/";
 const client = new MongoClient(uri);
 // const dbName = ''
 export async function createEmployees(employee) {

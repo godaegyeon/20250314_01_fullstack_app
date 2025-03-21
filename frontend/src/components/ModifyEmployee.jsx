@@ -3,28 +3,37 @@ import { Modal, Button, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function ModifyEmployee({fullscreen,show,setShow}) {
+function ModifyEmployee({ editEmployee }) {
   const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  const [formData, setFormData] = useState({
+    id: editEmployee.id,
+    lastname: editEmployee.lastName,
+    firstname: editEmployee.firstName,
+    hiredate: editEmployee.hireDate,
+  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = (e) => {
+    const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      // e.preDefault();
+      e.stopPropagation();
     }
     setValidated(true);
     ModifyEmployee();
   };
 
-
-
   const ModifyEmployee = async () => {
     await axios
       .put('http://localhost:3000/employees', {
-        employee_id: document.querySelector('#EmpId').value,
-        lsat_name: document.querySelector('#EmpLastName').value,
-        first_name: document.querySelector('#EmpFirstName').value,
-        hire_date: document.querySelector('#EmpHireDate').value,
+        employee_id: formData.id,
+        lsat_name: formData.lastname,
+        first_name: formData.firstname,
+        hire_date: formData.hiredate,
       })
       .then((response) => {
         console.log(response);
@@ -35,7 +44,7 @@ function ModifyEmployee({fullscreen,show,setShow}) {
   };
 
   return (
-    <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
+    <Modal>
       <Modal.Header closeButton>
         <Modal.Title>Modal</Modal.Title>
       </Modal.Header>
@@ -54,7 +63,10 @@ function ModifyEmployee({fullscreen,show,setShow}) {
                   <Form.Control
                     type="text"
                     placeholder="사번을 입력하세요"
+                    onChange={handleChange}
+                    name="id"
                     required
+                    
                   />
                   <Form.Text>
                     추후 사번은 자동 생성되어 부여될 예정입니다.
@@ -69,6 +81,8 @@ function ModifyEmployee({fullscreen,show,setShow}) {
                   <Form.Control
                     type="text"
                     placeholder="성을 입력하세요"
+                    onChange={handleChange}
+                    name="lastname"
                     required
                   />
                 </Form.Group>
@@ -81,6 +95,8 @@ function ModifyEmployee({fullscreen,show,setShow}) {
                   <Form.Control
                     type="text"
                     placeholder="이름을 입력하세요"
+                    onChange={handleChange}
+                    name="firstname"
                     required
                   />
                 </Form.Group>
@@ -89,6 +105,8 @@ function ModifyEmployee({fullscreen,show,setShow}) {
                   <Form.Control
                     type="date"
                     placeholder="입사일을 입력하세요"
+                    onChange={handleChange}
+                    name="hiredate"
                     required
                   />
                   <Form.Text>
