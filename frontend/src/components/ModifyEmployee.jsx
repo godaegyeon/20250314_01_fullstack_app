@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
-import { Modal, Button, Container, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ModifyEmployee({ editEmployee }) {
+  console.log(editEmployee);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
-    id: editEmployee.id,
-    lastname: editEmployee.lastName,
-    firstname: editEmployee.firstName,
-    hiredate: editEmployee.hireDate,
+    _id: editEmployee._id,
+    id: editEmployee.employee_id,
+    lastName: editEmployee.last_name,
+    firstName: editEmployee.first_name,
+    hireDate: editEmployee.hire_date,
   });
+  console.log(formData);
+  
+  const modalStyle = {
+    display: 'block',
+    position: 'fixed',
+    zIndex: 999,
+  };
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -18,22 +27,22 @@ function ModifyEmployee({ editEmployee }) {
     });
   };
   const handleSubmit = (e) => {
+    e.preDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      // e.preDefault();
       e.stopPropagation();
     }
     setValidated(true);
-    ModifyEmployee();
+    updateEmployee();
   };
 
-  const ModifyEmployee = async () => {
+  const updateEmployee = async () => {
     await axios
       .put('http://localhost:3000/employees', {
         employee_id: formData.id,
-        lsat_name: formData.lastname,
-        first_name: formData.firstname,
-        hire_date: formData.hiredate,
+        last_name: formData.lastName,
+        first_name: formData.firstName,
+        hire_date: formData.hireDate,
       })
       .then((response) => {
         console.log(response);
@@ -44,29 +53,31 @@ function ModifyEmployee({ editEmployee }) {
   };
 
   return (
-    <Modal>
+    <div className='modal show' style={modalStyle}>
+
+    <Modal.Dialog fullscreen={true}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal</Modal.Title>
+        <Modal.Title>사원정보 수정</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
           <Row>
             <Col>
-              <h1 className="text-center my-3">사원 등록</h1>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group
-                  className="mb-3 text-start"
+                  className="mb-3"
                   controlId="EmpId"
                   aria-autocomplete="off"
                 >
                   <Form.Label>사번</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="사번을 입력하세요"
                     onChange={handleChange}
                     name="id"
+                    defaultValue={formData.id}
+                    disabled
                     required
-                    
                   />
                   <Form.Text>
                     추후 사번은 자동 생성되어 부여될 예정입니다.
@@ -82,7 +93,8 @@ function ModifyEmployee({ editEmployee }) {
                     type="text"
                     placeholder="성을 입력하세요"
                     onChange={handleChange}
-                    name="lastname"
+                    name="lastName"
+                    defaultValue={formData.lastName}
                     required
                   />
                 </Form.Group>
@@ -96,7 +108,8 @@ function ModifyEmployee({ editEmployee }) {
                     type="text"
                     placeholder="이름을 입력하세요"
                     onChange={handleChange}
-                    name="firstname"
+                    name="firstName"
+                    defaultValue={formData.firstName}
                     required
                   />
                 </Form.Group>
@@ -106,7 +119,8 @@ function ModifyEmployee({ editEmployee }) {
                     type="date"
                     placeholder="입사일을 입력하세요"
                     onChange={handleChange}
-                    name="hiredate"
+                    name="hireDate"
+                    defaultValue={formData.hireDate}
                     required
                   />
                   <Form.Text>
@@ -119,7 +133,12 @@ function ModifyEmployee({ editEmployee }) {
           </Row>
         </Container>
       </Modal.Body>
-    </Modal>
+      <Modal.Footer>
+        <Button variant="secondary">Close</Button>
+        <Button variant="primary">Save change</Button>
+      </Modal.Footer>
+    </Modal.Dialog>
+    </div>
   );
 }
 

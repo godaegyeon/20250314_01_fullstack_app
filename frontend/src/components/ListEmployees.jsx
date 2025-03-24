@@ -8,40 +8,35 @@ import ModifyEmployee from '../components/ModifyEmployee';
 function ListEmployees() {
   const [employees, setEmployees] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
-  const [editEmployee, setEditEmployee] =useState(null)
+  const [editEmployee, setEditEmployee] = useState(null);
+  const getEmployees = async () => {
+    const data = await axios.get('http://localhost:3000/employees');
+    // fetch() : json parse 직접 ==> response.json() 호출
+    // axios() : json parse 직접 ==> state에 담의면 됨
+    setEmployees(data.data);
+  };
   useEffect(() => {
-    const getEmployees = async () => {
-      const data = await axios.get('http://localhost:3000/employees');
-      // fetch() : json parse 직접 ==> response.json() 호출
-      // axios() : json parse 직접 ==> state에 담의면 됨
-      setEmployees(data.data);
-    };
     getEmployees();
   }, []);
 
   const handleEdit = (e) => {
-    setEditEmployee(employees[e.target.dataset.id])
+    setEditEmployee(employees[e.target.dataset.id]);
     setIsVisible((prevState) => !prevState);
   };
 
   const handleDelete = async (e) => {
-    // console.log(e.currentTarget.dataset.empId);
+    const targetId = e.currentTarget.dataset.empId;
     if (confirm('정말로 삭제하시겠슴니까?')) {
-      // console.log('삭제요청을 진행합니다');
       await axios
-        .delete(
-          `http://localhost:3000/employees/${e.currentTarget.dataset.empId}`
-        )
-        .then((Response) => console.log(Response))
+        .delete(`http://localhost:3000/employees/${targetId}`)
+        .then((response) => console.log(response))
         .catch((e) => console.log(e));
     }
-
+    getEmployees();
   };
   return (
     <>
-      {isVisible && (
-        <ModifyEmployee editEmployee={editEmployee} />
-      )}
+      {isVisible && <ModifyEmployee editEmployee={editEmployee} />}
       <Container>
         <Row>
           <Col>
@@ -67,7 +62,7 @@ function ListEmployees() {
                   <tr key={i}>
                     <td>{emp.employee_id}</td>
                     <td>
-                    {emp.lsat_name} {emp.first_name}
+                      {emp.last_name} {emp.first_name}
                     </td>
                     <td>{emp.email}</td>
                     <td>{emp.phone_number}</td>
@@ -93,9 +88,7 @@ function ListEmployees() {
                       <Button
                         variant="primary"
                         size="sm"
-                        onClick={
-                          handleEdit
-                        }
+                        onClick={handleEdit}
                         data-id={i}
                       >
                         수정

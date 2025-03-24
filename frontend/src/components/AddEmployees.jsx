@@ -5,13 +5,26 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
 function AddEmployees() {
-  // const [formData, setFormData] = useState({});
   const [validated, setValidated] = useState(false);
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  const [formData, setFormData] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    hireDate: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      e.stopPropagation();
     }
     setValidated(true);
     addEmployee();
@@ -20,10 +33,10 @@ function AddEmployees() {
   const addEmployee = async () => {
     await axios
       .post('http://localhost:3000/employees', {
-        employee_id: document.querySelector('#EmpId').value,
-        lsat_name: document.querySelector('#EmpLastName').value,
-        first_name: document.querySelector('#EmpFirstName').value,
-        hire_date: document.querySelector('#EmpHireDate').value,
+        employee_id: formData.id,
+        last_name: formData.lastName,
+        first_name: formData.firstName,
+        hire_date: formData.hireDate,
       })
       .then((response) => {
         console.log(response);
@@ -46,8 +59,10 @@ function AddEmployees() {
               >
                 <Form.Label>사번</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   placeholder="사번을 입력하세요"
+                  onChange={handleChange}
+                  name="id"
                   required
                 />
                 <Form.Text>
@@ -63,6 +78,8 @@ function AddEmployees() {
                 <Form.Control
                   type="text"
                   placeholder="성을 입력하세요"
+                  onChange={handleChange}
+                  name="lastName"
                   required
                 />
               </Form.Group>
@@ -75,6 +92,8 @@ function AddEmployees() {
                 <Form.Control
                   type="text"
                   placeholder="이름을 입력하세요"
+                  onChange={handleChange}
+                  name="firstName"
                   required
                 />
               </Form.Group>
@@ -83,6 +102,8 @@ function AddEmployees() {
                 <Form.Control
                   type="date"
                   placeholder="입사일을 입력하세요"
+                  onChange={handleChange}
+                  name="hireDate"
                   required
                 />
                 <Form.Text>
