@@ -29,3 +29,15 @@
 .fs-175{
   font-size: 1.75rem;
 }
+
+.active{
+  background-color: dodgerblue;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 3rem;
+  padding: .5rem 1rem;
+}
+
+td{
+  vertical-align: middle;
+}
