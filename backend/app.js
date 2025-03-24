@@ -4,6 +4,7 @@ import cors from "cors";
 import { readEmployees } from "./crud-lead.js";
 import { createEmployees } from "./crud-create.js";
 import { deleteEmployees } from "./crud-delete.js";
+import { updateEmployees } from "./crud-update.js";
 
 const app = express();
 const port = 3000;
@@ -42,8 +43,24 @@ app.post("/employees", async (req, res) => {
     });
   }
 });
-app.put("/employees/:id", (req, res) => {
-  res.send("Update movie");
+app.put("/employees/:id", async (req, res) => {
+  console.log(target);
+  
+  try {
+    const request = await updateUser({
+      id: req.params.id,
+      data: req.body,
+    });
+    res.status(201).json(
+      result
+    );
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      status: "fail",
+      message: "데이터 업데이트 실패",
+    });
+  }
 });
 app.delete("/employees/:id", async (req, res) => {
   try {

@@ -36,7 +36,7 @@ function ListEmployees() {
   };
   return (
     <>
-      {isVisible && <ModifyEmployee editEmployee={editEmployee} />}
+      {isVisible && <ModifyEmployee editEmployee={editEmployee} setIsModalShow={setIsVisible} />}
       <Container>
         <Row>
           <Col>
