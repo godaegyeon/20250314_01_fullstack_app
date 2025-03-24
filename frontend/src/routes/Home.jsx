@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router';
+import { Outlet, NavLink, Link } from 'react-router';
 import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,16 +19,16 @@ function Home() {
                   style={{ listStyle: 'none' }}
                 >
                   <li>
-                    <Link to="./home">처음으로</Link>
+                    <NavLink to="./home">처음으로</NavLink>
                   </li>
                   <li>
-                    <Link to="./list">사원목록</Link>
+                    <NavLink to="./list">사원목록</NavLink>
                   </li>
                   <li>
-                    <Link to="./add">사원등록</Link>
+                    <NavLink to="./add">사원등록</NavLink>
                   </li>
                   <li>
-                    <Link to="./0">새소식</Link>
+                    <NavLink to="./0">새소식</NavLink>
                   </li>
                 </ul>
               </nav>
@@ -42,7 +42,7 @@ function Home() {
       <footer>
         <Container>
           <Row>
-            <Col>
+            <Col className='mx-auto'>
               <p>&copy; 한울ERP</p>
             </Col>
           </Row>
