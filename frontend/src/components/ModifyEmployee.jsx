@@ -3,7 +3,7 @@ import { Modal, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function ModifyEmployee({ editEmployee, setIsVisible }) {
+function ModifyEmployee({ editEmployee, setIsModalShow }) {
   // console.log(editEmployee);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ function ModifyEmployee({ editEmployee, setIsVisible }) {
   };
 
   const handleModalClose = () => {
-    setIsVisible(false);
+    setIsModalShow(false);
   };
   const handleChange = (e) => {
     setFormData({

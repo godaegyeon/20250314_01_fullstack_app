@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, NavLink, Link } from 'react-router';
+import { Outlet, NavLink } from 'react-router';
 import { Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

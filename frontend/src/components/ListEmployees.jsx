@@ -7,7 +7,7 @@ import ModifyEmployee from '../components/ModifyEmployee';
 
 function ListEmployees() {
   const [employees, setEmployees] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isModalShow, setIsModalShow] = useState(false);
   const [editEmployee, setEditEmployee] = useState(null);
   const getEmployees = async () => {
     const data = await axios.get('http://localhost:3000/employees');
@@ -21,7 +21,7 @@ function ListEmployees() {
 
   const handleEdit = (e) => {
     setEditEmployee(employees[e.target.dataset.id]);
-    setIsVisible((prevState) => !prevState);
+    setIsModalShow((prevState) => !prevState);
   };
 
   const handleDelete = async (e) => {
@@ -36,7 +36,7 @@ function ListEmployees() {
   };
   return (
     <>
-      {isVisible && <ModifyEmployee editEmployee={editEmployee} setIsModalShow={setIsVisible} />}
+      {isModalShow && <ModifyEmployee editEmployee={editEmployee} setIsModalShow={setIsModalShow} />}
       <Container>
         <Row>
           <Col>
